@@ -8,6 +8,7 @@ public class Domicilio {
     private String localidad;
     private long altura;
 
+
     // Constructor
     public Domicilio(String calle, Integer numero, Integer dep_num, int piso, String localidad){
         this.calle = calle;
