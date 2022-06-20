@@ -6,6 +6,7 @@ public class Domicilio {
     private Integer dep_num;
     private int piso;
     private String localidad;
+    private long altura;
 
     // Constructor
     public Domicilio(String calle, Integer numero, Integer dep_num, int piso, String localidad){
