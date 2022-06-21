@@ -1,5 +1,5 @@
 public class Domicilio {
-    
+
     // Atributos
     private String calle;
     private Integer numero;
@@ -7,10 +7,11 @@ public class Domicilio {
     private int piso;
     private String localidad;
     private long altura;
+    private String nombre;
 
 
     // Constructor
-    public Domicilio(String calle, Integer numero, Integer dep_num, int piso, String localidad){
+    public Domicilio(String calle, Integer numero, Integer dep_num, int piso, String localidad) {
         this.calle = calle;
         this.numero = numero;
         this.dep_num = dep_num;
@@ -19,7 +20,6 @@ public class Domicilio {
     }
 
     // getters y setters
-    
 
     // Metodos
 }
