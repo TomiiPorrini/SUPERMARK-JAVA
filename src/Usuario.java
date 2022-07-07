@@ -1,3 +1,4 @@
+
 import java.util.Scanner;
 
 public class Usuario {
@@ -131,12 +132,3 @@ public class Usuario {
 		return valido;
 	}
 
-	// metodo main
-	public static void main(String[] args) {
-
-		Usuario usu2 = new Usuario();
-		usu2.registrar();
-
-		System.out.print(usu2.toString());
-	}
-}
