@@ -59,4 +59,10 @@ public class Localidad {
 	public void setCiudad(String ciudad) {
 		this.ciudad = ciudad;
 	}
+
+	//METODOS
+	//este metodo es gral. Recibe una localidad y a partir de eso de la printea.
+	public void getLocalizacion(Localidad x){
+		System.out.println(x.ciudad+", "+x.departamento+", "+x.provincia+".");
+	}
 }

@@ -9,13 +9,13 @@ import org.json.JSONException;
 
 public class App {
 	public static void main(String[]args){
-		 String log4jConfPath = "C:/Users/Matias/Desktop/Lenguajes/Java 1000 programadores salteños/PROYECTO FINAL/Supermark/to/log4j.properties";
-		   PropertyConfigurator.configure(log4jConfPath);
-	       Gson mapper= new Gson();
-	       port(8080);
-	       String str = "{\"name\":\"John\",\"age\":\"30\"}";
-           JSONObject jsonObject = new JSONObject(str);
-           System.out.println("OBJECT : "+ jsonObject.toString());
-	       get("/consulta", (req,res) -> jsonObject);
-	   }
+		String log4jConfPath = "C:/Users/Matias/Desktop/Lenguajes/Java 1000 programadores salteï¿½os/PROYECTO FINAL/Supermark/to/log4j.properties";
+		PropertyConfigurator.configure(log4jConfPath);
+		Gson mapper= new Gson();
+		port(8080);
+		String str = "{\"name\":\"John\",\"age\":\"30\"}";
+        JSONObject jsonObject = new JSONObject(str);
+        System.out.println("OBJECT : "+ jsonObject.toString());
+		get("/consulta", (req,res) -> jsonObject);
+	}
 }
