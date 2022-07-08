@@ -1,49 +1,61 @@
-package supermark;
-
-import java.util.Date;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.MessageFormat;
+import java.util.Scanner;
 
 public class Usuario {
-	//atributos
-	private int id;
+	// atributos
+	private int id_usuario;
+	private String dni;
+	private Domicilio domicilio;
 	private String nombre;
 	private String apellido;
 	private String email;
-	private int dni;
-	private String contrasenia;
 	private boolean isAdmin;
-	private Domicilio Domicilio;
+	private String contraseña;
 
-	//Constructor por defecto
+	// contructor por defecto
 	public Usuario() {
-		
+
 	}
-	
-	//Constructor Normal
-	public Usuario(int id, String nombre, String apellido, String email, int dni, String contrasenia, boolean isAdmin,
-			supermark.Domicilio domicilio) {
-		super();
-		this.id = id;
+
+	// constructor normal
+	public Usuario(int id_usuario, String nombre, String apellido, String email, String contraseña, String dni, boolean isAdmin, Domicilio domicilio) {
+		this.id_usuario = id_usuario;
+		this.dni = dni;
+		this.domicilio = domicilio;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.email = email;
-		this.dni = dni;
-		this.contrasenia = contrasenia;
+		this.contraseña = contraseña;
 		this.isAdmin = isAdmin;
-		Domicilio = domicilio;
 	}
-	
-	//Getters y Setters
-	public int getId() {
-		return id;
+	//metodo toString
+	public String toString() {
+		return "Usuario id_usuario:" + id_usuario + ", dni:" + dni + ", domicilio:" + domicilio + ", nombre:" + nombre
+				+ ", apellido:" + apellido + ", email:" + email + ", contraseña:" + contraseña + "";
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	// getters y setters
+	public int getId_usuario() {
+		return id_usuario;
+	}
+
+	public void setId_usuario(int id_usuario) {
+		this.id_usuario = id_usuario;
+	}
+
+	public String getDni() {
+		return dni;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
+	}
+
+	public Domicilio getDomicilio() {
+		return domicilio;
+	}
+
+	public void setDomicilio(Domicilio domicilio) {
+		this.domicilio = domicilio;
 	}
 
 	public String getNombre() {
@@ -70,20 +82,12 @@ public class Usuario {
 		this.email = email;
 	}
 
-	public int getDni() {
-		return dni;
+	public String getContraseña() {
+		return contraseña;
 	}
 
-	public void setDni(int dni) {
-		this.dni = dni;
-	}
-
-	public String getContrasenia() {
-		return contrasenia;
-	}
-
-	public void setContrasenia(String contrasenia) {
-		this.contrasenia = contrasenia;
+	public void setContraseña(String contraseña) {
+		this.contraseña = contraseña;
 	}
 
 	public boolean isAdmin() {
@@ -94,20 +98,53 @@ public class Usuario {
 		this.isAdmin = isAdmin;
 	}
 
-	public Domicilio getDomicilio() {
-		return Domicilio;
+	
+	
+	// metodos de registro
+	public void registrar() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Ingrese su Nombre:");
+		this.setNombre(sc.nextLine());
+		System.out.println("Ingrese su Apellido:");
+		this.setApellido(sc.nextLine());
+		System.out.println("Ingrese su DNI:");
+		this.setDni(sc.nextLine());
+		System.out.println("Ingrese su Email:");
+		this.setEmail(sc.nextLine());
+
+		contra();
+		sc.close();
+	}
+	//metodo de ingreso de contraseña
+	public void contra() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Ingrese su Contraseña:");
+		String password = sc.nextLine();
+		System.out.println("Confirme su contraseña");
+		String confi = sc.nextLine();
+
+		if (vali(password, confi)) {
+			this.setContraseña(password);
+		} else if (!password.contentEquals(confi)) {
+			System.out.println("confirmacion invalida");
+			contra();
+		} else if (password.length() < 8) {
+			System.out.println("Muy corto: necesita un minimo de 8 digitos");
+			contra();
+		}
+
+	}
+	// validacion de contraseña
+	public boolean vali(String password, String confi) {
+		boolean valido = false;
+		if (password.length() >= 8 && password.contentEquals(confi)) {
+			valido = true;
+		}
+
+		return valido;
 	}
 
-	public void setDomicilio(Domicilio domicilio) {
-		Domicilio = domicilio;
-	}
+
 	
-	
-//	@Override
-//	public String toString() {
-//		return "Usuario [id_usuario=" + id_usuario + ", nombre=" + nombre + ", apellido=" + apellido
-//				+ ", esAdministrador=" + esAdministrador + ", email=" + email + ", fecha_nacimiento=" + fecha_nacimiento
-//				+ ", dni=" + dni + "]";	
-//		}
 
 }
