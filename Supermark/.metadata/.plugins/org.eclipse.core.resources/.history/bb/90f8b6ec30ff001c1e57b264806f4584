@@ -1,0 +1,34 @@
+package supermark;
+
+import java.sql.Connection;
+import java.sql.Statement;
+
+public class Credenciales {
+	
+	//Atributos
+	 public String JDBC_DRIVER; 
+	 public String DB_URL;
+	// Credenciales de la BDD
+	 public String USER;
+	 public String PASS;
+	 public String path_log4_properties;
+	 
+	 public Credenciales(){
+		 this.JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+		 this.DB_URL = "jdbc:mysql://localhost:3306/supermark_v1";
+		 this.USER = "root";
+		 this.PASS = "Algomejor1";
+		 this.path_log4_properties = "C:/Users/Matias/Desktop/Lenguajes/Java 1000 programadores salteños/PROYECTO FINAL";
+		 
+			Credenciales mi_credi = new Credenciales();
+			String JDBC_DRIVER = mi_credi.JDBC_DRIVER; 
+			String DB_URL = mi_credi.DB_URL;
+		 // Credenciales de la BDD
+			String USER = mi_credi.USER;
+			String PASS = mi_credi.PASS;
+			
+			 Connection conn = null;
+			 Statement stmt = null;
+	 }	
+	 
+}

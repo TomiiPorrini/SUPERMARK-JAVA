@@ -27,7 +27,7 @@ CREATE TABLE `usuario` (
   `nombre` varchar(30) DEFAULT NULL,
   `apellido` varchar(30) DEFAULT NULL,
   `email` varchar(30) DEFAULT NULL,
-  `dni` int unsigned NOT NULL,
+  `dni` varchar(9) DEFAULT NULL,
   `contrasenia` varchar(16) DEFAULT NULL,
   `isAdmin` bit(1) NOT NULL DEFAULT b'0',
   `id_domicilio` int NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Matias Dante','Martinez','admin@admin.com',39402380,'12345678',_binary '',1),(2,'Silvia Susana','Otero','SilviaSusana@hotmail.com',15638665,'A1234567',_binary '\0',2),(3,'Anthony','Shepard','libero.at@hotmail.ca',52356126,'RWJ97YYG5CS',_binary '\0',3),(4,'Rashad','Clemons','vel.vulputate@yahoo.com',23512365,'EYB72FOM7NO',_binary '\0',4),(5,'Tashya','Munoz','malesuada.id@icloud.org',43596325,'ZYE23WDM2NZ.',_binary '\0',5),(6,'Adrian','Rowland','at@icloud.couk',35126354,'PNQ48AGJ8HP',_binary '\0',6),(7,'Jeanette','Richards','cum.sociis@aol.net',28354156,'VBU35KPC5N.',_binary '\0',7),(8,'Boris','Conway','aliquamnunc@google.org',52398501,'KSF96SHQ5SI.',_binary '\0',8),(9,'Davis','Gaines','non@yahoo.or',20564805,'QNY99QVJ1R.',_binary '\0',9),(10,'Christopher','Black','augue.ac.ipsum@hotmail.org',19956050,'QNY99QVJ1RC.',_binary '\0',10);
+INSERT INTO `usuario` VALUES (1,'Matias Dante','Martinez','admin@admin.com','39402380','12345678',_binary '',1),(2,'Silvia Susana','Otero','SilviaSusana@hotmail.com','15638665','A1234567',_binary '\0',2),(3,'Anthony','Shepard','libero.at@hotmail.ca','52356126','RWJ97YYG5CS',_binary '\0',3),(4,'Rashad','Clemons','vel.vulputate@yahoo.com','23512365','EYB72FOM7NO',_binary '\0',4),(5,'Tashya','Munoz','malesuada.id@icloud.org','43596325','ZYE23WDM2NZ.',_binary '\0',5),(6,'Adrian','Rowland','at@icloud.couk','35126354','PNQ48AGJ8HP',_binary '\0',6),(7,'Jeanette','Richards','cum.sociis@aol.net','28354156','VBU35KPC5N.',_binary '\0',7),(8,'Boris','Conway','aliquamnunc@google.org','52398501','KSF96SHQ5SI.',_binary '\0',8),(9,'Davis','Gaines','non@yahoo.or','20564805','QNY99QVJ1R.',_binary '\0',9),(10,'Christopher','Black','augue.ac.ipsum@hotmail.org','19956050','QNY99QVJ1RC.',_binary '\0',10);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-07 16:25:45
+-- Dump completed on 2022-07-09 23:57:53
