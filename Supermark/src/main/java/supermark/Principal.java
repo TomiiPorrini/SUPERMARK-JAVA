@@ -4,7 +4,8 @@ import java.util.Scanner;
 import javax.security.auth.x500.X500Principal;
 
 public class Principal{
-
+//Todos los menus serán realizados de manera recursiva. Para que asi pueda ahorrarse memoria y algunos pasos
+//que podrian desordenar y complejizar la lectura del codigo.
     public static void menu_cliente(Usuario x) {
         Scanner input = new Scanner(System.in);
         System.out.println("Seleccione una opcion: ");
@@ -64,7 +65,7 @@ public class Principal{
         System.out.println("1 -> Cargar Productos.");
         System.out.println("2 -> Modificar datos de productos cargados.");
         System.out.println("3 -> Ver todos los usuarios que realizaron compras.");
-        System.out.println("4 -> Ver listado de productos seleccionados por el usuario.");
+        System.out.println("4 -> Ver listado de productos seleccionados de un usuario.");
         System.out.println("0 -> Salir.");
         System.out.println("**************************************************************");
         // terminan las opciones. se captura la seleccion e ingresa al menu.
@@ -77,30 +78,91 @@ public class Principal{
                 break;
             case 1:
                 // Hacer acciones necesarias.
-                //producto.CargarProducto()
+                //producto.CargarProducto();
                 menu_admin(x);
                 break;
             case 2:
                 // Hacer acciones necesarias.
-                //producto.ModiProd(id o nombre del producto)
+                System.out.println("Ingrese el nombre del producto a modificar: ");
+                String nombreProd = input.nextLine();
+                System.out.println("Ingrese el nuevo precio: ");
+                double precioProd = input.nextDouble();
+                System.out.println("Ingrese el stock a sumar: ");
+                int stockProd = input.nextInt();
+                ModiProd(nombreProd, precioProd, stockProd);
                 menu_admin(x);
                 break;
             case 3:
                 // Hacer acciones necesarias.
-                //Comprobante.ListaUsua_Compr()
+                //se utiliza, de la clase comprobante, el metodo listaUsuario_Compra(), que nos devuelve que usuarios realizaron al  menos una compra.
+                ListaUsua_Compr();
                 menu_admin(x);
                 break;
             case 4:
                 // Hacer acciones necesarias.
-                // Usuario.ListaProdSelected()
+                System.out.println("Ingrese el nombre del usuario que quiere obtener datos.: ");
+                String nombreUser = input.nextLine();
+                //se utiliza el metodo listaProdSelected(), de la clase Comprobante
+                //para obtener todos los productos seleccionados por tal usuario.
+                ListaProdSelected(nombreUser);
                 menu_admin(x);
                 break;
             default:
-                System.out.println("Opcion incorrecta.");
+                System.out.println("Opcion incorrecta, volviendo al menú.");
                 menu_admin(x);
                 break;
         }
         input.close();
+    }
+
+    public static Localidad generarLoc(){
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Ingrese el nombre de su provincia: ");
+        String provincia = input.nextLine();
+
+        System.out.println("Ingrese el nombre de su departamento: ");
+        String departamento = input.nextLine();
+
+        System.out.println("Ingrese el nombre de su ciudad: ");
+        String ciudad = input.nextLine();
+
+        Localidad localidad = new Localidad(provincia, departamento, ciudad);
+        input.close();
+        return localidad;
+    }
+
+    public static Domicilio generarDom(){
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Ingrese el nombre de la primer calle: ");
+        String calle1 = input.nextLine();
+
+        System.out.println("Ingrese el nombre de la segunda calle: ");
+        String calle2 = input.nextLine();
+
+        System.out.println("Ingrese el numero de casa: ");
+        int numero = input.nextInt();
+
+        System.out.println("Ingrese el nombre de la ruta: ");
+        String ruta = input.nextLine();
+
+        System.out.println("Ingrese el kilometro: ");
+        int km = input.nextInt();
+
+        System.out.println("Si vive en un departamento, ingrese el numero de departamento. Si no es asi, ingrese 0: ");
+        int depNumero = input.nextInt();
+
+        System.out.println("Ingrese el piso, si no vive en un depto, ingrese 0: ");
+        int piso = input.nextInt();
+
+        Localidad localidad = generarLoc();
+        
+        Domicilio domicilio = new Domicilio(calle1, calle2, numero, ruta, km, depNumero, piso, localidad);
+
+        input.close();
+
+        return domicilio;
     }
 
     public static void menu_gral(){
@@ -109,7 +171,7 @@ public class Principal{
 
         //Si no tiene cuenta, hacemos que cree una, y tiramos directamente el menu cliente. porque no va a ser un admin, ya que estos son hardcodeados
         //Si ingresa una opcion distinta a 0 o 1, entonces directamente despedimos.
-
+        
         Scanner input = new Scanner(System.in);
 
         System.out.println("Si usted tiene una cuenta, presione 1");
@@ -121,26 +183,40 @@ public class Principal{
                 //registrar usuario. luego de eso, menu de cliente.
                 //porque de por si va a ser un cliente. no puede ser un admin.
 
-                //pedir mas datos
+                Usuario usuario = new Usuario();
+                
+                System.out.println("Ingrese su Nombre: ");
+                String nombre = input.nextLine();
+
+                System.out.println("Ingrese su Apellido: ");
+                String apellido = input.nextLine();
+
                 System.out.println("Ingrese su mail: ");
                 String mail = input.nextLine();
+
                 System.out.println("Ingrese su contraseña: ");
                 String contrasenia = input.nextLine();
 
-                Usuario usuario = registrarse(nombre, apellido, mail, dni, contrasenia, domicilio);
+                System.out.println("Ingrese su dni: ");
+                String dni = input.nextLine();
+
+                Domicilio domicilio = generarDom();
+
+                usuario.registrarse(nombre, apellido, mail, dni, contrasenia, domicilio);
+                
                 menu_cliente(usuario);
                 break;
             case 1:
                 //pedimos datos de usuario para el login
                 System.out.println("Ingrese su mail: ");
-                String mail = input.nextLine();
+                mail = input.nextLine();
                 System.out.println("Ingrese su contraseña: ");
-                String contrasenia = input.nextLine();
+                contrasenia = input.nextLine();
 
-                Usuario usuario = funlogin(mail, contrasenia); //ingresa usuario
+                usuario = funlogin(mail, contrasenia); //ingresa usuario
 
                 //comprobamos si es un admin o no.
-                if (usuario.getIsAdmin() == 1){
+                if (usuario.getIsAdmin()){
                     menu_admin(usuario);
                 }
                 else{

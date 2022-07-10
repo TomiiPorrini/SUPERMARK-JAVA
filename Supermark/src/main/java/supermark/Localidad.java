@@ -8,7 +8,6 @@ import java.text.MessageFormat;
 
 public class Localidad {
 	//atributos
-	private int id;
 	private String provincia;
 	private String departamento;
 	private String ciudad;
@@ -19,23 +18,14 @@ public class Localidad {
 	}
 	
 	//Constructor Normal
-	public Localidad(int id, String provincia, String departamento, String ciudad) {
+	public Localidad(String provincia, String departamento, String ciudad) {
 		super();
-		this.id = id;
 		this.provincia = provincia;
 		this.departamento = departamento;
 		this.ciudad = ciudad;
 	}
 
 	//Getters y Setters
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String getProvincia() {
 		return provincia;
 	}

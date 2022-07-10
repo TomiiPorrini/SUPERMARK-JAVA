@@ -24,8 +24,7 @@ public class Usuario {
 	}
 	
 	//Constructor Normal
-	public Usuario(int id, String nombre, String apellido, String email, int dni, String contrasenia, boolean isAdmin,
-			supermark.Domicilio domicilio) {
+	public Usuario(int id, String nombre, String apellido, String email, int dni, String contrasenia,supermark.Domicilio domicilio) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -33,7 +32,7 @@ public class Usuario {
 		this.email = email;
 		this.dni = dni;
 		this.contrasenia = contrasenia;
-		this.isAdmin = isAdmin;
+		this.isAdmin = false;
 		Domicilio = domicilio;
 	}
 	

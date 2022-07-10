@@ -24,10 +24,8 @@ public class Domicilio {
 	}
 
 	//Constructor Normal
-	public Domicilio(int id, String calle1, String calle2, int numero, String ruta, int km, int depNumero, int piso,
-			supermark.Localidad localidad) {
+	public Domicilio(String calle1, String calle2, int numero, String ruta, int km, int depNumero, int piso, supermark.Localidad localidad) {
 		super();
-		this.id = id;
 		this.calle1 = calle1;
 		this.calle2 = calle2;
 		this.numero = numero;
