@@ -1,0 +1,401 @@
+CREATE DATABASE  IF NOT EXISTS `supermark` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `supermark`;
+-- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
+--
+-- Host: localhost    Database: supermark
+-- ------------------------------------------------------
+-- Server version	8.0.29
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `comprobante`
+--
+
+DROP TABLE IF EXISTS `comprobante`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `comprobante` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tipo` varchar(1) DEFAULT NULL,
+  `fecha` timestamp NULL DEFAULT NULL,
+  `total` FLOAT NULL,
+  `id_usuario` int NOT NULL,
+  `id_tc` bigint unsigned NOT NULL,
+  `id_detalle` int NOT NULL,
+  PRIMARY KEY (`id`),	
+  KEY `usuario_comprobante_fk` (`id_usuario`),
+  KEY `tc_comprobante_fk` (`id_tc`),
+  KEY `detalle_comprbante_fk` (`id_detalle`),
+  CONSTRAINT `detalle_comprbante_fk` FOREIGN KEY (`id_detalle`) REFERENCES `detalle` (`id`),
+  CONSTRAINT `tc_comprobante_fk` FOREIGN KEY (`id_tc`) REFERENCES `tarjetacredito` (`numero`),
+  CONSTRAINT `usuario_comprobante_fk` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `descuento`
+--
+
+DROP TABLE IF EXISTS `descuento`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `descuento` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `diaSemana` varchar(10) default null,
+  `porcentaje` float DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `detalle`
+--
+
+DROP TABLE IF EXISTS `detalle`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `detalle` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_producto` int NOT NULL,
+  `cantidad` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `producto_fk` (`id_producto`),
+  CONSTRAINT `producto_fk` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `domicilio`
+--
+
+DROP TABLE IF EXISTS `domicilio`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `domicilio` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `calle1` varchar(30) DEFAULT NULL,
+  `calle2` varchar(30) DEFAULT NULL,
+  `numero` int DEFAULT NULL,
+  `ruta` varchar(30) DEFAULT NULL,
+  `km` int DEFAULT NULL,
+  `depNumero` int DEFAULT NULL,
+  `piso` int DEFAULT NULL,
+  `id_localidad` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `localidad_fk` (`id_localidad`),
+  CONSTRAINT `localidad_fk` FOREIGN KEY (`id_localidad`) REFERENCES `localidad` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `localidad`
+--
+
+DROP TABLE IF EXISTS `localidad`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `localidad` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `provincia` varchar(20) DEFAULT NULL,
+  `departamento` varchar(40) DEFAULT NULL,
+  `ciudad` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `producto`
+--
+
+DROP TABLE IF EXISTS `producto`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `producto` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) DEFAULT NULL,
+  `marca` varchar(20) DEFAULT NULL,
+  `fecha_venc` date DEFAULT NULL,
+  `precio` float NOT NULL,
+  `stock` int DEFAULT NULL,
+  `id_tipo` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tipo_fk` (`id_tipo`),
+  CONSTRAINT `tipo_fk` FOREIGN KEY (`id_tipo`) REFERENCES `tipo` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tarjetacredito`
+--
+
+DROP TABLE IF EXISTS `tarjetacredito`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tarjetacredito` (
+  `numero` bigint unsigned NOT NULL,
+  `banco` varchar(20) DEFAULT NULL,
+  `titular` varchar(60) DEFAULT NULL,
+  `fecha_caducidad` date DEFAULT NULL,
+  `id_usuario` int NOT NULL,
+  PRIMARY KEY (`numero`),
+  KEY `usuario_tc_fk` (`id_usuario`),
+  CONSTRAINT `usuario_tc_fk` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tipo`
+--
+
+DROP TABLE IF EXISTS `tipo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tipo` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(128) DEFAULT NULL,
+  `id_descuento` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `descuento_fk` (`id_descuento`),
+  CONSTRAINT `descuento_fk` FOREIGN KEY (`id_descuento`) REFERENCES `descuento` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `usuario`
+--
+
+DROP TABLE IF EXISTS `usuario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuario` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(30) DEFAULT NULL,
+  `apellido` varchar(30) DEFAULT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  `dni` varchar(9) DEFAULT NULL,
+  `contrasenia` varchar(16) DEFAULT NULL,
+  `isAdmin` bit DEFAULT 0 not null,
+  `id_domicilio` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `domicilio_fk` (`id_domicilio`),
+  CONSTRAINT `domicilio_fk` FOREIGN KEY (`id_domicilio`) REFERENCES `domicilio` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2022-06-22 12:12:46
+
+use supermark;
+INSERT INTO localidad (id, provincia, departamento, ciudad) VALUES (1,'Salta', 'San Martín', 'Aguaray');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'San Martín', 'Embarcación');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'San Martín', 'Ballivian');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'San Martín', 'Mosconi');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'San Martín', 'Salvador Mazza');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'San Martín', 'Tartagal');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Rivadavia', 'Rivadavia Banda Norte');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Rivadavia', 'Rivadavia Banda Sur');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Rivadavia', 'Santa Victoria Este');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Salta', 'Salta');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Salta', 'San Lorenzo');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Oran', 'Aguas Blancas');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Oran', 'Colonia Santa Rosa');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Oran', 'Hipólito Yrigoyen');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Oran', 'San Ramón de la Nueva Orán');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Oran', 'Pichanal');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Oran', 'Urundel');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'La Viña', 'La Viña');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'La Viña', 'Coronel Moldes');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Metan', 'Ríos Piedras');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Metan', 'Metán');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Metan', 'El Galpón');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'La Candelaria', 'El Jardín');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'La Candelaria', 'La Candelaria');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'La Candelaria', 'El Tala');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Iruya', 'Iruya');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Iruya', 'Isla de Cañas');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Santa Victoria', 'Nazareno');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Santa Victoria', 'Los Toldos');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Santa Victoria', 'Santa Victoria Oeste');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'La Poma', 'La Poma');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Rosario de la Frontera', 'El Potrero');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Rosario de la Frontera', 'Rosario de la Frontera');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Molinos', 'Seclantás');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Molinos', 'Molinos');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'La Caldera', 'La Caldera');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'La Caldera', 'Vaqueros');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Los Andes', 'Tolar Grande');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Los Andes', 'San Antonio de Los Cobres');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'San Carlos', 'Angastaco');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'San Carlos', 'Animaná');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'San Carlos', 'San Carlos');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Anta', 'Apolinario Saravia');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Anta', 'El Quebrachal');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Anta', 'Gral. Pizarro');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Anta', 'J.V. Gonzalez');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Anta', 'Las Lajitas');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Guachipas', 'Guachipas');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Cafayate', 'Cafayate');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Cachi', 'Payogasta');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Cachi', 'Cachi');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Rosario de Lerma', 'Rosario de Lerma');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Rosario de Lerma', 'Campo Quijano');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'General Güemes', 'Campo Santo');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'General Güemes', 'El Bordo');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'General Güemes', 'General Güemes');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Cerrillos', 'La Merced');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Cerrillos', ' El Carril');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Chicoana', ' Cerrillos');
+INSERT INTO localidad (provincia, departamento, ciudad) VALUES ('Salta', 'Chicoana', ' Chicoana');
+
+
+insert into domicilio (id, calle1, calle2, numero, ruta, km, depNumero, piso, id_localidad) values (1, 'San Luis', null, 20 , null, null, 4, 7, 1);
+insert into domicilio (calle1, calle2, numero, ruta, km, depNumero, piso, id_localidad) values ('Ceibos', null, 320 , null, null, null, null, 2);
+insert into domicilio (calle1, calle2, numero, ruta, km, depNumero, piso, id_localidad) values ('Solis Pizarro', 'Las Garzas', 767 , null, null, null, null, 3);
+insert into domicilio (calle1, calle2, numero, ruta, km, depNumero, piso, id_localidad) values ('Mitre', null, 5678 , null, null, null, null, 4);
+insert into domicilio (calle1, calle2, numero, ruta, km, depNumero, piso, id_localidad) values ('Ruta 60', null, 60 , 61, null, null, null, 5);
+insert into domicilio (calle1, calle2, numero, ruta, km, depNumero, piso, id_localidad) values ('Departament', 'Arenales', null, null, null, 2, 1, 6);
+insert into domicilio (calle1, calle2, numero, ruta, km, depNumero, piso, id_localidad) values ('San Jose', 'Calazans', 325 , null, null, null, null, 7);
+insert into domicilio (calle1, calle2, numero, ruta, km, depNumero, piso, id_localidad) values ('Facundo de Zuviria', null, 40 , null, null, null, null, 8);
+insert into domicilio (calle1, calle2, numero, ruta, km, depNumero, piso, id_localidad) values ('Alta Tension', null, 199 , null, null, null, null, 9);
+insert into domicilio (calle1, calle2, numero, ruta, km, depNumero, piso, id_localidad) values ('Tres Cerritos', 'siempre viva', 1996 , null, null, null, null, 10);
+
+
+insert into usuario (id, nombre, apellido, email, dni, contrasenia, isAdmin, id_domicilio) values (1, 'Matias Dante', 'Martinez', 'admin@admin.com' , 39402380, '12345678', 1, 1);
+insert into usuario (nombre, apellido, email, dni, contrasenia, id_domicilio) values ('Silvia Susana', 'Otero', 'SilviaSusana@hotmail.com' , 15638665, 'A1234567',2);
+insert into usuario (nombre, apellido, email, dni, contrasenia, id_domicilio) values ('Anthony', 'Shepard', 'libero.at@hotmail.ca' , 52356126, 'RWJ97YYG5CS',3);
+insert into usuario (nombre, apellido, email, dni, contrasenia, id_domicilio) values ('Rashad', 'Clemons', 'vel.vulputate@yahoo.com' , 23512365, 'EYB72FOM7NO',4);
+insert into usuario (nombre, apellido, email, dni, contrasenia, id_domicilio) values ('Tashya', 'Munoz', 'malesuada.id@icloud.org' , 43596325, 'ZYE23WDM2NZ.',5);
+insert into usuario (nombre, apellido, email, dni, contrasenia, id_domicilio) values ('Adrian', 'Rowland', 'at@icloud.couk' , 35126354, 'PNQ48AGJ8HP',6);
+insert into usuario (nombre, apellido, email, dni, contrasenia, id_domicilio) values ('Jeanette', 'Richards', 'cum.sociis@aol.net' , 28354156, 'VBU35KPC5N.',7);
+insert into usuario (nombre, apellido, email, dni, contrasenia, id_domicilio) values ('Boris', 'Conway', 'aliquamnunc@google.org' , 52398501, 'KSF96SHQ5SI.',8);
+insert into usuario (nombre, apellido, email, dni, contrasenia, id_domicilio) values ('Davis', 'Gaines', 'non@yahoo.or' , 20564805, 'QNY99QVJ1R.',9);
+insert into usuario (nombre, apellido, email, dni, contrasenia, id_domicilio) values ('Christopher', 'Black', 'augue.ac.ipsum@hotmail.org' , 19956050, 'QNY99QVJ1RC.',10);
+
+
+insert into tarjetacredito (numero, banco, titular, fecha_caducidad, id_usuario) values (5547305637843746, 'mastercard', 'MATIAS D MARTINEZ', '2025-04-01',1);
+insert into tarjetacredito (numero, banco, titular, fecha_caducidad, id_usuario) values (5218294728031761, 'visa', 'Silvia Susana Otero', '2025-04-01',2);
+insert into tarjetacredito (numero, banco, titular, fecha_caducidad, id_usuario) values (1482992646799444, 'american express', 'Anthony Shepard', '2025-04-01',3);
+insert into tarjetacredito (numero, banco, titular, fecha_caducidad, id_usuario) values (4127763888169679, 'naranja', 'Rashad Clemons', '2025-04-01',4);
+insert into tarjetacredito (numero, banco, titular, fecha_caducidad, id_usuario) values (3721739806996429, 'cabal', 'Tashya Munoz', '2025-04-01',5);
+insert into tarjetacredito (numero, banco, titular, fecha_caducidad, id_usuario) values (4492935287155530, 'cordobesa', 'Adrian Rowland', '2025-04-01',6);
+insert into tarjetacredito (numero, banco, titular, fecha_caducidad, id_usuario) values (4567564566047805, 'tarjeta shopping', 'Jeanette Richards', '2025-04-01',7);
+insert into tarjetacredito (numero, banco, titular, fecha_caducidad, id_usuario) values (3066729612926036, 'cencosud', 'Boris Conway', '2025-04-01',8);
+insert into tarjetacredito (numero, banco, titular, fecha_caducidad, id_usuario) values (3534741295468490, 'falabella', 'Davis Gaines', '2025-04-01',9);
+insert into tarjetacredito (numero, banco, titular, fecha_caducidad, id_usuario) values (1238818095333344, 'agencar', 'Christopher Black', '2025-04-01',10);
+
+
+insert into descuento (id, diaSemana, porcentaje) values (1, 'Lunes', 0.2);
+insert into descuento (diaSemana, porcentaje) values ('Martes', 0.15);
+insert into descuento (diaSemana, porcentaje) values ('Miercoles', 0.24);
+insert into descuento (diaSemana, porcentaje) values ('Jueves', 0.12);
+insert into descuento (diaSemana, porcentaje) values ('Viernes', 0.18);
+insert into descuento (diaSemana, porcentaje) values ('Sabado', 0.21);
+insert into descuento (diaSemana, porcentaje) values ('Domingo', 0.19);
+
+
+insert into tipo (id, descripcion, id_descuento) values (1, 'Almacén', 1);
+insert into tipo (descripcion, id_descuento) values ('Desayuno', 2);
+insert into tipo (descripcion, id_descuento) values ('Bebidas', 3);
+insert into tipo (descripcion, id_descuento) values ('Frescos', 4);
+insert into tipo (descripcion, id_descuento) values ('Prutas y Verduras', 5);
+insert into tipo (descripcion, id_descuento) values ('Congelados', 6);
+insert into tipo (descripcion, id_descuento) values ('Perfumerìa', 7);
+insert into tipo (descripcion, id_descuento) values ('Limpieza', 1);
+insert into tipo (descripcion, id_descuento) values ('Bebés y Niños', 2);
+insert into tipo (descripcion, id_descuento) values ('Mascotas', 3);
+insert into tipo (descripcion, id_descuento) values ('Kiosko', 4); 
+insert into tipo (descripcion, id_descuento) values ('Hogar y Deco', 5); 
+insert into tipo (descripcion, id_descuento) values ('Electro Hogar', 6); 
+
+
+
+insert into producto (id, nombre, marca, fecha_venc, precio, stock, id_tipo) values (1, 'Aceite de Girasol 900 Ml.', 'DIA', '2023-07-02', 156.45, 10, 1);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Arvejas secas remojadas DIA 300 Gr.', 'Dia', '2023-07-02', 69.99, 10, 1);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Caldo Verduras Deshidratado 12 cubos', 'Knorr', '2023-07-02', 227.99, 10, 1);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Turrón con Maní 25 Gr.', 'Arcor', '2023-07-02', 37.00, 10, 1);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Harina Leudante 1 Kg.', 'DIA', '2023-07-02', 115.00, 10, 1);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Maní Pelado Pehuamar 110 Gr.', 'Pemahuar', '2023-07-02', 136.39, 10, 1);
+
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Galletitas 354 Gr.', 'Oreo', '2023-07-02', 349.00, 10, 2);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Azúcar Plus Común tipo A 1 Kg.', 'DIA', '2023-07-02', 135, 10, 2);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Dulce de Leche Clásico con calcio 400 Gr.', 'La Serenísima', '2023-07-02', 84.61, 10, 2);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Pan Rallado Molino 500 Gr.', 'Cañuelas', '2023-07-02', 84.61, 10, 2);
+
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Bidón de agua 6,5 Lts.', 'Dia', '2023-07-02', 190.00, 10, 3);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Gaseosa Sabor Original 1,5 Lts.', 'Coca-Cola ', '2023-07-02', 135.17, 10, 3);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Jugo en Polvo Naranja Dulce 7,5 Gr.', 'Clight', '2023-07-02', 39.39, 10, 3);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Aperitivo Fernet 750 ml.', 'Branca', '2023-07-02', 1189.00, 10, 3);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Vino Tinto Malbec 750 ml.', 'Elementos', '2023-07-02', 469.00, 10, 3);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Cerveza Rubia 500 ml.', 'St. Wendeler', '2023-07-02', 140.00, 10, 3);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Vodka en lata 473 ml.', 'Dr. Lemon', '2023-07-02', 217.00, 10, 3);
+
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Manteca Calidad Extra 200 Gr.', 'DIA', '2023-07-02', 228.00, 10, 4);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Leche Semi Descremada Larga Vida 1L', 'DIA', '2023-07-02', 123.50, 10, 4);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Banana x 1 Kg.', 'DIA', '2023-07-02', 189, 10, 4);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Pollo Fresco x 1 Kg.', 'AVILIGHT', '2023-07-02', 299, 10, 4);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Queso Untable La Serenísima Light 290 Gr.', 'LA SERENISIMA', '2023-07-02', 213.50, 10, 4);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Ravioles DIA 4 Quesos 520 Gr.', 'DIA', '2023-07-02', 222.00, 10, 4);
+
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Palta x 1 Un.', 'SIN MARCA', '2023-07-02', 79, 10, 5);
+
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Medallones de Pollo DIA 160 Gr.', 'DIA', '2023-07-02', 139.00, 10, 6);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Frambuesas Bañadas Delicious en Chocolate 130 Gr.', 'DIA', '2023-07-02', 399.00, 10, 6);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Langostinos DIA congelados 250 Gr.', 'DIA', '2023-07-02', 699.00, 10, 6);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Paty de Carne Clásicas 4 Un. 320 Gr.', 'PATY', '2023-07-02', 567.00, 10, 6);
+
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Crema Dental Triple Accion Xtra Whitening 70 Gr', 'Colgate', '2023-07-02', 213.60, 10, 7);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Desodorante Antitranspirante 250 Ml.', 'Dove', '2023-07-02', 276.25, 10, 7);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Shampoo Reconstrucción 400 Ml.', 'Dove', '2023-07-02', 376.44, 10, 7);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Jabón de Tocador Original individual 90 Gr.', 'Dove', '2023-07-02', 164.49, 10, 7);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Toallitas Femeninas Protección Dual Suave 9 Un.', 'Always', '2023-07-02', 105.50, 10, 7);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Máquinas Desechables Para Depilar Suave 2 Un.', 'Gillette', '2023-07-02', 220.00, 10, 7);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Hisopos 100 Un.', 'Bonté', '2023-07-02', 159.99, 10, 7);
+
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Rollo de Cocina 50 Paños 3 Ud.', 'DIA', '2023-07-02', 223.00, 10, 8);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Limpiador Desinfectante Lavanda 1,8 Lts.', 'Poett', '2023-07-02', 219.00, 10, 8);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Shampoo Reconstrucción Completa 400 Ml.', 'Dove', '2023-07-02', 376.44, 10, 8);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Esponja Antibacterial 1 Un.', 'Mortimer', '2023-07-02', 44.44, 10, 8);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Jabón Líquido para Diluir Bio-Enzimas 500 Ml.', 'Skip', '2023-07-02', 622.80, 10, 8);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Desinfectante de Ambientes en Aerosol 360 Ml.', 'Lysoform', '2023-07-02', 219.00, 10, 8);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('MATA MOSCAS Y MOSQUITOS AEROSOL 360ML', 'FUYI', '2023-07-02', 175.00, 10, 8);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Fósforos Ecológicos 220 Ud.', 'Buenos Días', '2023-07-02', 149.99, 10, 8);
+
+
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Toallitas Húmedas Triple Protección 80 Un.', 'Huggies', '2023-07-02', 305.00, 10, 9);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Óleo Calcareo 500 Ml.', 'Baby Smile', '2023-07-02', 335.00, 10, 9);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Leche Bebé Etapa 1 Modificada 500 Ml.', 'Sancor', '2023-07-02', 274.00, 10, 9);
+
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Alimento Seco para Gatos Salmón y Pollo 3 Kg.', 'Gati', '2023-07-02', 993.32, 10, 10);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Alimento Perro Carne/Pollo/Cereales/Vegetales 3 Kg', 'Dogui', '2023-07-02', 705.35, 10, 10);
+
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Mano Recolectora 396 Gr.', 'Arcor', '2023-07-02', 229.00, 10, 11);
+
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Pegamento Instantáneo 2 Ml.', 'La Gotita', '2023-07-02', 210.00, 10, 12);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Carrito de Compras Grande 38 Lts.', 'SIN MARCA', '2023-07-02', 999.99, 10, 12);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Pila Alcalina AAA 2 Un.', 'Energizer', '2023-07-02', 415.00, 10, 12);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Molde Plástico de galletitas 4 Un.', 'Carol', '2023-07-02', 199.00, 10, 12);
+
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Turboconvector de PTC PVE60 2 Potencias', 'Electrolux', '2023-07-02', 27999.00, 10, 13);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Vaporizador de Pisos PowerMop+ MOP11', 'Electrolux', '2023-07-02', 19999.00, 10, 13);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Horno Empotrable Eléctrico EOCH50 50 Lts', 'Electrolux', '2023-07-02', 89999.00, 10, 13);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Secarropas Eseb6 6kg', 'Electrolux', '2023-07-02', 78999.00, 10, 13);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Heladera con freezer HGF357AFP Plata 282 lts', 'GAFA', '2023-07-02', 84999.00, 10, 13);
+insert into producto (nombre, marca, fecha_venc, precio, stock, id_tipo) values ('Campana Extractora 90 CM', 'Whirlpool', '2023-07-02', 110099.00, 10, 13);
