@@ -9,21 +9,22 @@ public class Comprobante {
 	private Date fecha;
 	private Usuario Usuario;
 	private TarjetaCredito TarjetaCredito;
-	
+	private Detalle detalle;
+
 	//Constructor por defecto
 	public Comprobante() {
 		
 	}
 
 	//Constructor Normal
-	public Comprobante(int id, String tipo, Date fecha, supermark.Usuario usuario,
-			supermark.TarjetaCredito tarjetaCredito) {
+	public Comprobante(int id, String tipo, Date fecha, supermark.Usuario usuario, supermark.TarjetaCredito tarjetaCredito, Detalle detalle) {
 		super();
 		this.id = id;
 		this.tipo = tipo;
 		this.fecha = fecha;
-		Usuario = usuario;
-		TarjetaCredito = tarjetaCredito;
+		this.Usuario = usuario;
+		this.TarjetaCredito = tarjetaCredito;
+		this.detalle = detalle;
 	}
 
 	//Getters y Setters
@@ -65,6 +66,14 @@ public class Comprobante {
 
 	public void setTarjetaCredito(TarjetaCredito tarjetaCredito) {
 		TarjetaCredito = tarjetaCredito;
+	}
+
+	public Detalle getDetalle() {
+		return this.detalle;
+	}
+
+	public void setDetalle(Detalle detalle) {
+		this.detalle = detalle;
 	}
 	
 }
