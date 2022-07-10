@@ -61,4 +61,11 @@ public class Detalle {
 	}
 	
 	
+	public void SeleccionarProd(){
+		
+	}
+	
+	public void ListaProd(){
+		
+	}
 }

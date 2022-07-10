@@ -91,6 +91,121 @@ public class Producto {
 	public void setTipo(Tipo tipo) {
 		Tipo = tipo;
 	}
+
 	
+	public void AltaProd(String nombre, String marca, String fecha_venc, double precio, int stock, int id_tipo) {
+		// Registrar JDBC Driver
+		// JDBC nombre del driver y URL de la BDD
+		Credenciales mi_credi = new Credenciales();
+		String JDBC_DRIVER = mi_credi.JDBC_DRIVER;
+		String DB_URL = mi_credi.DB_URL;
+		// Credenciales de la BDD
+		String USER = mi_credi.USER;
+		String PASS = mi_credi.PASS;
+
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			// PASO 2: Registrar JDBC driver
+			Class.forName(JDBC_DRIVER);
+
+			// PASO3: Abrir una Conexion
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			// PASO 4: Ejecutar una consulta SQL
+			System.out.println("Creating statement...");
+			stmt = conn.createStatement();
+			String sql = MessageFormat.format(
+					"INSERT INTO producto (nombre, marca, fecha_venc, precio, stock, id_tipo) VALUES ({0}, {1}, {2}, {3}, {4}, {5});",
+					nombre, marca, fecha_venc, precio, stock, id_tipo);
+			System.out.println(sql);
+			stmt.executeUpdate(sql);
+
+			System.out.println("Valores Insertados con Exito");
+
+
+			// PASO6: Entorno de Limpieza
+			stmt.close();
+			conn.close();
+		} catch (SQLException se) {
+			// Resolver errores para JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Resolver errores para Class.forName
+			e.printStackTrace();
+		} finally {
+			// Bloque finalmente utilizado para cerrar recursos
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException se2) {
+			} // Nada que podamos hacer
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} // cierra finally try
+		} // cierra try
+		System.out.println("Goodbye!");
+
+	}
 	
+	public void ModiProd(double precio, int stock, int id){
+		 //  Registrar JDBC Driver
+		// JDBC nombre del driver y URL de la BDD
+			Credenciales mi_credi = new Credenciales();
+			String JDBC_DRIVER = mi_credi.JDBC_DRIVER; 
+			String DB_URL = mi_credi.DB_URL;
+		 // Credenciales de la BDD
+			String USER = mi_credi.USER;
+			String PASS = mi_credi.PASS;
+			
+			 Connection conn = null;
+			 Statement stmt = null;
+			 
+			 try{
+			 //PASO 2: Registrar JDBC driver
+			 Class.forName(JDBC_DRIVER);
+			 
+			 //PASO3: Abrir una Conexion
+			 System.out.println("Connecting to database...");
+			 conn = DriverManager.getConnection(DB_URL,USER,PASS);
+			 
+			 //PASO 4: Ejecutar una consulta SQL
+			 System.out.println("Creating statement...");
+			 stmt = conn.createStatement();
+			 String sql;
+			 sql = MessageFormat.format("UPDATE producto SET precio = {0}, stock = {1} WHERE id = {2}", precio, stock, id);
+			 stmt.executeUpdate(sql);
+			 
+			 System.out.println("Valores ACTUALIZADOS con exito :) !");
+			 
+			 //PASO6: Entorno de Limpieza
+			 stmt.close();
+			 conn.close();
+			 }catch(SQLException se){
+				 // Resolver errores para JDBC
+				 se.printStackTrace();
+			 }catch(Exception e){
+				 // Resolver errores para Class.forName
+				 e.printStackTrace();
+			 }finally{
+			 // Bloque finalmente utilizado para cerrar recursos
+			 try{
+				 if(stmt!=null)
+					 stmt.close();
+			 }catch(SQLException se2){
+			 }// Nada que podamos hacer
+			 try{
+				 if(conn!=null)
+					 conn.close();
+			 }catch(SQLException se){
+			 se.printStackTrace();
+			 	} //cierra finally try
+			 } //cierra try
+			 System.out.println("Goodbye!");
+		
+	}
 }
